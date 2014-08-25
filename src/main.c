@@ -31,8 +31,8 @@ int kmain(struct multiboot* mboot_ptr)//name is mentioned in boot.s
 	asm volatile("int $0x4");
 	prtf("aa bb %x %u %s 11\t \nbb\n", 10, 10, "str");	
 	//asm volatile("sti");
-    //init_timer(500);
-//	monitor_write_hex((u32int)&end);
+    	//init_timer(500);
+	//monitor_write_hex((u32int)&end);
 	prtf("1\tend is at addr :%x\n", (u32int)&end);
 
 
@@ -40,6 +40,6 @@ int kmain(struct multiboot* mboot_ptr)//name is mentioned in boot.s
 	prtf("paging enabled!\n");
 	u32int* ptr = (u32int*)0xa0000000;
 	*ptr = 1;
-//	prtf("%x\n", do_page_fault);
+
 	return 0xdeadbeef;
 }
