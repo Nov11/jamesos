@@ -1,6 +1,6 @@
 #include "paging.h"
 #include "kheap.h"
-//32bit so 8 * 4
+//32bit so it's 8 * 4
 #define INDEX_FROM_BIT(a) (a / (8 * 4))
 #define OFFSET_FROM_BIT(a) (a % (8 * 4))
 page_directory_t* kernel_directory;
@@ -64,7 +64,7 @@ void alloc_frame(page_t* page, u8int is_kernel, u8int is_writable)
 	set_frame(idx * 0x1000);
 	page->present = 1;
 	page->rw = (is_writable) ? 1 : 0;
-	page->user = (is_kernel) ? 1 : 0;
+	page->user = (is_kernel) ? 0 : 1;//user: 1
 	page->frame = idx;
 }
 
@@ -83,7 +83,7 @@ void free_frames(page_t* page)
 void init_paging()
 {
 	int i;
-	u32int mem_end_page = 0x1000000;//假定有着么多内存 按照4k分成nframe页
+	u32int mem_end_page = 0x1000000;//假定有这么多内存 按照4k分成nframe页
 	nframes = mem_end_page / 0x1000;
 	frames = (u32int*)kmalloc(INDEX_FROM_BIT(nframes));
 	memset(frames, 0, INDEX_FROM_BIT(nframes));
@@ -124,7 +124,7 @@ page_t* get_page(u32int addr, u8int create, page_directory_t* dir)
 		u32int tmp;
 		dir->tables[table_idx] = (page_table_t*)kmalloc_ap(sizeof(page_table_t), &tmp);
 		memset(dir->tables[table_idx], 0, sizeof(page_table_t));
-		dir->tablesPhysical[table_idx] = tmp | 0x7;//应该是0x3 0x7踩了reserve bits
+		dir->tablesPhysical[table_idx] = tmp | 0x7;//u w p  1 1 1  0x7
 		return &dir->tables[table_idx]->pages[addr % 1024];
 	}
 	return NULL;
