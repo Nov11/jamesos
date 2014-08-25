@@ -86,7 +86,7 @@ void monitor_clear()
 	move_cursor();
 }
 
-void monitor_write(char* c)
+void monitor_write(const char* c)
 {
 	if(c == NULL){
 		return;
@@ -162,4 +162,41 @@ void monitor_write_dec(u32int n)
 	index = index == -1 ? index + 1 : index;
 	monitor_write(&dec[index]);
 }
-		
+
+void prtf(const char* format, ...)
+{
+	const char** arg = &format;//存format的地址
+	int c;
+
+	//arg是format这个参数的下一个参数的地址,也就是字符串后第一个参数的地址
+	arg++;
+	while((c = *format++) != 0){
+		if(c == '\\'){
+			c = *format++;
+			switch(c){
+				case 'n':
+					monitor_put('\n');
+					break;
+				case 't':
+					monitor_put('\t');
+					break;
+			}
+		}else if(c == '%'){
+			c = *format++;
+			switch(c){
+				case 'u':
+					monitor_write_dec(*(u32int*)arg);
+					break;
+				case 'x':
+					monitor_write_hex(*(u32int*)arg);
+					break;
+				case 's':
+					monitor_write(*arg);
+					break;
+			}
+			arg++;
+		}else{
+			monitor_put(c);
+		}
+	}
+}

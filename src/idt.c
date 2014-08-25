@@ -55,6 +55,43 @@ void init_idt()
 	idt_set_gate(29, (u32int)isr29, 0x08, 0x8e);	
 	idt_set_gate(30, (u32int)isr30, 0x08, 0x8e);	
 	idt_set_gate(31, (u32int)isr31, 0x08, 0x8e);	
-	
+	//加入irq对应的表项
+	idt_set_gate(32, (u32int)irq0, 0x08, 0x8E);
+    idt_set_gate(33, (u32int)irq1, 0x08, 0x8E);
+    idt_set_gate(34, (u32int)irq2, 0x08, 0x8E);
+    idt_set_gate(35, (u32int)irq3, 0x08, 0x8E);
+    idt_set_gate(36, (u32int)irq4, 0x08, 0x8E);
+    idt_set_gate(37, (u32int)irq5, 0x08, 0x8E);
+    idt_set_gate(38, (u32int)irq6, 0x08, 0x8E);
+    idt_set_gate(39, (u32int)irq7, 0x08, 0x8E);
+    idt_set_gate(40, (u32int)irq8, 0x08, 0x8E);
+    idt_set_gate(41, (u32int)irq9, 0x08, 0x8E);
+    idt_set_gate(42, (u32int)irq10, 0x08, 0x8E);
+    idt_set_gate(43, (u32int)irq11, 0x08, 0x8E);
+    idt_set_gate(44, (u32int)irq12, 0x08, 0x8E);
+    idt_set_gate(45, (u32int)irq13, 0x08, 0x8E);
+    idt_set_gate(46, (u32int)irq14, 0x08, 0x8E);
+    idt_set_gate(47, (u32int)irq15, 0x08, 0x8E);
+    //初始化两个pic芯片
+    //1.Its vector offset. (ICW2)
+    //2.Tell it how it is wired to master/slaves. (ICW3)
+    //3.Gives additional information about the environment. (ICW4) 
+	//开始初始化过程
+    outb(0x20, 0x11);
+    outb(0xA0, 0x11);
+    //给定偏移 0x20=32 32~39 8个  0x28=40 40～47 8个
+    outb(0x21, 0x20);
+    outb(0xA1, 0x28);
+    //告诉主片 从片级联在2号端口
+    outb(0x21, 0x04);
+    //告诉从片 它是级联的
+    outb(0xA1, 0x02);
+    //按照8086模式工作
+    outb(0x21, 0x01);
+    outb(0xA1, 0x01);
+    //芯片开工 cpu没开中断 不会响应8259a
+    outb(0x21, 0x0);
+    outb(0xA1, 0x0);
+    
 	idt_flush((u32int)&idt_ptr);
 }

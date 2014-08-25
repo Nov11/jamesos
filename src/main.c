@@ -1,6 +1,7 @@
 #include "monitor.h"
 #include "idt.h"
 #include "gdt.h"
+#include "timer.h"
 u16int kss;
 u32int kesp;
 
@@ -26,5 +27,8 @@ int kmain(struct multiboot* mboot_ptr)//name is mentioned in boot.s
 	//init_idt();
 	asm volatile("int $0x3");
 	asm volatile("int $0x4");
+	prtf("aa bb %x %u %s 11\t \nbb\n", 10, 10, "str");	
+	asm volatile("sti");
+    init_timer(500);
 	return 0xdeadbeef;
 }
