@@ -11,7 +11,7 @@ typedef struct re{
 	u32int eip, cs, eflags, useresp, ss;
 }registers_t;
 
-extern void(*spec_irq_handler[256])(registers_t);
+extern void(*spec_handler[256])(registers_t);
 
 void isr_handler(registers_t regs);
 void irq_handler(registers_t regs);

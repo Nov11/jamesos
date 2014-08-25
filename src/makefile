@@ -13,6 +13,6 @@ all: $(COBJ) $(SOBJ) link
 clean:
 	-rm *.o kernel *~
 link:$(SOBJ)
-	ld $(LDFLAGS) -o kernel $(COBJ) $(SOBJ)
+	ld $(LDFLAGS) -o kernel $(SOBJ) $(COBJ)
 .s.o:
 	nasm $(ASFLAGS) $<

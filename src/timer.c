@@ -11,7 +11,7 @@ void timer_irq_routin(registers_t regs){
 
 void init_timer(u32int feq)
 {
-	spec_irq_handler[32] = timer_irq_routin;
+	spec_handler[32] = timer_irq_routin;
 	
 	u32int divsor = PITFREQUENCE / feq;
 	

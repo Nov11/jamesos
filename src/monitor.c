@@ -193,10 +193,25 @@ void prtf(const char* format, ...)
 				case 's':
 					monitor_write(*arg);
 					break;
+				case 'p':
+					monitor_write_hex(*(u32int*)arg);
+					break;
 			}
 			arg++;
 		}else{
 			monitor_put(c);
 		}
 	}
+}
+
+void panic(const char* msg, const char* file, u32int line)
+{
+	prtf("%s %s %u\n", msg, file, line);
+	while(1);
+}
+
+void panic_assert(const char* file, u32int line, const char* des)
+{
+	prtf("%s %u %s\n", file, des, line);
+	while(1);
 }

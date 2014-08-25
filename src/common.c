@@ -19,4 +19,11 @@ u16int inw(u16int port)
     return ret;
 }
 
-
+void memset(void* des, u8int c, u32int count)
+{
+	u8int* ptr = des;
+	while(count > 0){
+		*ptr++ = c;
+		count--;
+	}
+}
