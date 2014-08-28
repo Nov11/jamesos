@@ -18,5 +18,5 @@ http://wiki.osdev.org/Memory_Management_Unit 常用的0xfffff000访问页目录�
 google code上还有个稍微新一点实现： james molloy tutorial v2
 文档么 上面的hurlex 的doc里有一份
 
-个人认为可以在5的基础上搭虚拟内存部分，堆管理依赖分页虚拟内存
+个人认为应该在5的基础上搭虚拟内存部分，堆管理依赖分页虚拟内存
 接下来是任务切换 加上特权级转换 cpu编程就差不多了 快告别保护模式了
