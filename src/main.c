@@ -8,6 +8,7 @@
 
 u16int kss;
 u32int kesp;
+u32int kend;
 extern u32int end;
 //写个struct mulitboot 省着老有警告 用的时候再改
 //grub标准里有这个http://gnu.april.org/software/grub/manual/multiboot/multiboot.html
@@ -35,7 +36,7 @@ int kmain(struct multiboot_info* mboot_ptr)//name is mentioned in boot.s
 	//asm volatile("sti");
     	//init_timer(500);
 	//monitor_write_hex((u32int)&end);
-	prtf("1\tend is at addr :%x\n", (u32int)&end);
+	prtf("1\tend is at addr :%x end itself:%x kend:%x &kend:%x\n", (u32int)&end, end, kend, &kend);
 
 	/*旧的paging实现
 	init_paging();
@@ -48,16 +49,18 @@ int kmain(struct multiboot_info* mboot_ptr)//name is mentioned in boot.s
 	//分割物理内存管理 虚拟内存管理
 	//显式映射虚拟地址
 	//pmm里搞的都是物理地址 函数返回的也是物理地址
-	init_pmm (end);
+	init_pmm ((u32int)&end, 1 << 25);//32MB
 	init_vmm ();
-	prtf("mboot_ptr : %x\n", mboot_ptr);//大概0x2d000 没到640k呢
-	prtf("mem_upper %x\n", mboot_ptr->mem_upper);
-	u32int phys = align(end);
-	pmm_free_page(phys);
-	for(; phys < 1 << 24; phys += 0x100){
-		pmm_free_page(phys);
-	}
+	/*prtf("mboot_ptr : %x\n", mboot_ptr);//大概0x2d000 没到640k呢
+	prtf("mem_upper %x\n", mboot_ptr->mem_upper);*/
+	map(0xa0000000, 0x300000, PAGE_WRITE|PAGE_PRESENT);
+	prtf("mapped!\n");
 	u32int* ptr = (u32int*)0xa0000000;
 	*ptr = 1;
+	prtf("assigned!\n");
+	unmap(0xa0000000);
+	prtf("unmapped!\n");
+	*ptr = 2;
+	prtf("end!\n");
 	return 0xdeadbeef;
 }

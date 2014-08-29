@@ -9,7 +9,7 @@
 #define PAGE_WRITE		0x2
 #define PAGE_USER		0x4
 #define PAGE_MASK		0xfffff000
-#define PAGE_SIZE		0x1000
+
 
 //0xffbff000 dir:1111 1111 10 :1022 table: 11 1111 1111: 1023
 #define PAGE_DIR_VIRTUAL_ADDR	0xffbff000 
