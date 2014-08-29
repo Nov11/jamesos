@@ -27,3 +27,11 @@ void memset(void* des, u8int c, u32int count)
 		count--;
 	}
 }
+
+u32int align(u32int addr)
+{
+	if(addr & 0xfff){
+		return (addr + 0x1000) & ~0xfff;
+	}
+	return addr;
+}

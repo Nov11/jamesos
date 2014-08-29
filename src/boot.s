@@ -49,12 +49,20 @@ start:
 	;grub设置的 后面虽然没显示设定新值 但是堆栈在这儿呆着呢
 [extern kss]
 [extern kesp]
+
 	mov dword[kesp], esp
 	mov word[kss], ss
+	;搞一个stack 这东西放在bss段里
+	mov esp, stack
 	push ebx
 	
 	;cli;按多起动规范来说 可以不写
 	call kmain
 	jmp $
+
+section .useforstack
+	times 32768 db 0
+stack:
+
 
 

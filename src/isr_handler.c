@@ -29,3 +29,11 @@ void irq_handler(registers_t regs)
 	outb(0x20, 0x20);
 	
 }
+
+void reg_handler(void (*handler)(registers_t), u32int index)
+{
+	if(index >= 256){
+		PANIC("regs index");
+	}
+	spec_handler[index] = handler;
+}

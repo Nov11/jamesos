@@ -1,6 +1,7 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+
 #define NULL ((void*)0)
 
 typedef unsigned int u32int;
@@ -20,6 +21,6 @@ void outb(u16int, u8int);
 u8int inb(u16int);
 u16int inw(u16int);
 void memset(void* , u8int , u32int);
-
+u32int align(u32int addr);
 #endif
 				
